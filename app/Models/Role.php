@@ -11,7 +11,7 @@ class Role extends Model
     use HasFactory, Uuid;
 
     protected $fillable = [
-        role_name
+        'role_name'
     ];
 
     public function users()
