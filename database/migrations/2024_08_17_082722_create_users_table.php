@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('profile_picture')->nullable();
             $table->string('gender')->nullable();
             $table->date('dob')->nullable();
-            $table->string('email');
-            $table->string('password');
+            $table->string('phone', 20)->unique()->nullable();
+            $table->string('email')->unique();
+            $table->string('password')->nullable();
             $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
             $table->boolean('active')->default(true);
             $table->timestamps();
