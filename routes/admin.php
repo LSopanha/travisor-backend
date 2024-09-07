@@ -8,8 +8,8 @@
 
 use App\Http\Controllers\Api\v1\Admin\AdminController;
 use App\Http\Controllers\Api\v1\Admin\RoleController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\Admin\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:api', 'prefix' => 'auth/v1'], function ($router) {
    Route::post('logout', [AuthController::class, 'logout']);
