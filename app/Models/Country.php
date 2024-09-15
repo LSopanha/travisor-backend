@@ -11,6 +11,15 @@ class Country extends Model
     use HasFactory, Uuid;
 
     protected $fillable = [
-
+        "country_name",
+        "profile_picture",
+        "description",
+        "continent_id",
+        "active"
     ];
+
+    public function continent()
+    {
+        return $this->belongsTo(Continent::class);
+    }
 }

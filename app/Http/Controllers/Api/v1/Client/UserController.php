@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1\Admin;
+namespace App\Http\Controllers\Api\v1\Client;
 
 use App\Http\Controllers\Api\v1\BaseAPI;
-use App\Http\Requests\Admin\StoreUserRequest;
-use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserSV;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class ClientController extends BaseAPI
+class UserController extends BaseAPI
 {
     protected $userSV;
     public function __construct()
@@ -22,15 +22,15 @@ class ClientController extends BaseAPI
     public function index()
     {
         try {
-            $role = 2;
+            $role = 1;
             $admins = $this->userSV->getAllUsers($role);
-            return $this->successResponse($admins, 'Get all users successfully.');
+            return $this->successResponse($admins, 'Get all admins successfully.');
         } catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreAdminRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -43,10 +43,10 @@ class ClientController extends BaseAPI
             $params['email']           = getParam($request->all(), 'email');
             $params['password']        = getParam($request->all(), 'password');
             $params['profile_picture'] = getParam($request->all(), 'profile_picture');
-            $role = 2;
+            $role = 1;
             $admin = $this->userSV->createNewAdmin($params, $role);
             DB::commit();
-            return $this->successResponse($admin, 'User created successfully.');
+            return $this->successResponse($admin, 'Admin created successfully.');
         } catch(\Exception $e){
            return $this->errorResponse($e->getMessage(), $e->getCode());
         }
@@ -56,14 +56,14 @@ class ClientController extends BaseAPI
     {
         try{
             $admin = $this->userSV->getUserByGlobalId($global_id);
-            return $this->successResponse(new UserResource($admin), 'Get user successfully.');
+            return $this->successResponse(new UserResource($admin), 'Get admin successfully.');
 
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
 
-    public function update(UpdateUserRequest $request, $global_id)
+    public function update(UpdateAdminRequest $request, $global_id)
     {
         try{
             DB::beginTransaction();
@@ -76,13 +76,13 @@ class ClientController extends BaseAPI
 
             $admin                     = $this->userSV->updateUser($params, $global_id);
             DB::commit();
-            return $this->successResponse($admin, 'User updated successfully.');          
+            return $this->successResponse($admin, 'Admin updated successfully.');          
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
 
-    public function deactivateClient($global_id)
+    public function deactivateAdmin($global_id)
     {
         try{
             $active = 0;
@@ -90,9 +90,9 @@ class ClientController extends BaseAPI
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
-        return $this->successResponse($admin, 'User deactivated successfully.');
+        return $this->successResponse($admin, 'Admin deactivated successfully.');
     }
-    public function activateClient($global_id)
+    public function activateAdmin($global_id)
     {
         try{
             $active = 1;
@@ -100,7 +100,7 @@ class ClientController extends BaseAPI
         }catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
-        return $this->successResponse($admin, 'User activated successfully.');
+        return $this->successResponse($admin, 'Admin activated successfully.');
     }
 
 }
