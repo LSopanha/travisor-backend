@@ -11,6 +11,14 @@ class Continent extends Model
     use HasFactory, Uuid;
 
     protected $fillable = [
-
+        "continent_name", 
+        "profile_picture",
+        "description",
+        "active"
     ];
+
+    public function countries()
+    {
+        return $this->hasMany(Country::class);
+    }
 }
