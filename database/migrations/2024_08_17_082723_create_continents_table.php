@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('continent_name');
             $table->string('profile_picture')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

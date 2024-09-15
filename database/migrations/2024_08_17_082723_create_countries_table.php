@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('profile_picture')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('continent_id')->nullable()->constrained('continents')->onDelete('set null');
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
