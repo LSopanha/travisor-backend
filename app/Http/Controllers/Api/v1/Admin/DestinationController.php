@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Api\v1\Admin;
 use App\Http\Controllers\Api\v1\BaseAPI;
 use App\Http\Requests\Admin\StoreDestinationRequest;
 use App\Http\Requests\Admin\UpdateDestinationRequest;
-use App\Http\Resources\CountryResource;
 use App\Http\Resources\DestinationResource;
-use App\Http\Resources\UserResource;
 use App\Services\DestinationSV;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class DestinationController extends BaseAPI
 {

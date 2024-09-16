@@ -28,4 +28,10 @@ class Destination extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
+
 }
