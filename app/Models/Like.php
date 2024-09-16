@@ -13,4 +13,20 @@ class Like extends Model
     protected $fillable = [
 
     ];
+
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function blog()
+    {
+        return $this->belongsTo(Blog::class);
+    }
+
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
 }
