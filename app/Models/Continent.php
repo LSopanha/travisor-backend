@@ -21,4 +21,9 @@ class Continent extends Model
     {
         return $this->hasMany(Country::class);
     }
+
+    public function destimations()
+    {
+        return $this->hasMany(Destination::class);
+    }
 }

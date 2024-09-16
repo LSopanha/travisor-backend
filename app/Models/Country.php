@@ -22,4 +22,9 @@ class Country extends Model
     {
         return $this->belongsTo(Continent::class);
     }
+
+    public function destimations()
+    {
+        return $this->hasMany(Destination::class);
+    }
 }
