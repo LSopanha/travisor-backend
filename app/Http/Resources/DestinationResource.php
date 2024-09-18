@@ -26,9 +26,9 @@ class DestinationResource extends JsonResource
             'description'    => $this->continent->description
          ],
          'country'       => [
-            'global_id'    => $this->continent->global_id,
-            'country_name' => $this->continent->country_name,
-            'description'  => $this->continent->description
+            'global_id'    => $this->country->global_id,
+            'country_name' => $this->country->country_name,
+            'description'  => $this->country->description
          ],
          'active'     => $this->active,
          'created_at' => $this->created_at,

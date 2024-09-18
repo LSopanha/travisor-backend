@@ -43,15 +43,15 @@ class AuthSV extends BaseService
       return $this->respondWithTokenAdmin($token, $userData);
    }
 
-   public function loginClient($credentials)
+   public function loginClient($credentials, $userData)
    {
       if (!$credentials) {
          return response()->json(['error' => 'Invalid credentials'], 401);
       }
 
-      $user = User::where('phone', $credentials['phone'])->first();
+      $user = User::where('email', $credentials['email'])->first();
       if (!$user) { //Incorrect email
-         return response()->json(['error' => 'Phone or Password is incorrect!'], 401);
+         return response()->json(['error' => 'Email or Password is incorrect!'], 401);
       }
       else if ($user->active == 0) {
          return response()->json(['error' => 'User is deactivated!'], 401);
@@ -59,13 +59,13 @@ class AuthSV extends BaseService
       else {
 
          if (!Hash::check($credentials['password'], $user->password)) { //Incorrect password
-            return response()->json(['error' => 'Phone or Password is incorrect!'], 401);
+            return response()->json(['error' => 'Email or Password is incorrect!'], 401);
          }
-         if (!$token = Auth::guard('api-user')->attempt($credentials)) {
+         if (!$token = Auth::guard('api-client')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
          }
       }
-      return $this->respondWithTokenUser($token, $user);
+      return $this->respondWithTokenClient($token, $userData);
    }
   
 
@@ -84,11 +84,11 @@ class AuthSV extends BaseService
          return response()->json(['error' => 'Token has expired'], 401);
      }
    }
-   public function GetProfileUser()
+   public function GetProfileClient()
    {
       try {
          # Here we just get information about current user
-         return response()->json(Auth::guard('api-user')->user());
+         return response()->json(Auth::guard('api-client')->user());
 
       }  catch (TokenExpiredException $e) {
          return response()->json(['error' => 'Token has expired'], 401);
@@ -105,9 +105,9 @@ class AuthSV extends BaseService
       Auth::guard('api')->logout();
       return response()->json(['message' => 'Successfully logged out']);   
    }
-   public function logoutUser()
+   public function logoutClient()
    {
-      Auth::guard('api-user')->logout();
+      Auth::guard('api-client')->logout();
       return response()->json(['message' => 'Successfully logged out']);   
    }
 
@@ -122,11 +122,11 @@ class AuthSV extends BaseService
       # and return it here in response
       return $this->respondWithRefreshToken(Auth::guard('api')->setTTL(config('jwt.refresh_ttl'))->refresh());
    }
-   public function refreshUser()
+   public function refreshClient()
    {
       # When access token will be expired, we are going to generate a new one with this function 
       # and return it here in response
-      return $this->respondWithRefreshToken(Auth::guard('api-user')->setTTL(config('jwt.refresh_ttl'))->refresh());
+      return $this->respondWithRefreshToken(Auth::guard('api-client')->setTTL(config('jwt.refresh_ttl'))->refresh());
    }
 
    /**
@@ -149,7 +149,7 @@ class AuthSV extends BaseService
          'expires_in_second' => Auth::guard('api')->factory()->getTTL() * 60 
       ]);
    }
-   protected function respondWithTokenUser($token, $user = null)
+   protected function respondWithTokenClient($token, $user = null)
    {
       # This function is used to make JSON response with new
       # access token of current user
@@ -159,7 +159,7 @@ class AuthSV extends BaseService
          'data' => [
             'user' => $user
          ],
-         'expires_in_second' => Auth::guard('api-user')->factory()->getTTL() * 60 
+         'expires_in_second' => Auth::guard('api-client')->factory()->getTTL() * 60 
       ]);
    }
 

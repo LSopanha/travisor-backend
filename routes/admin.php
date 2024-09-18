@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\v1\Admin\CountryController;
 use App\Http\Controllers\Api\v1\Admin\DestinationController;
 use App\Http\Controllers\Api\v1\Admin\RoleController;
 use App\Http\Controllers\Api\v1\Admin\AuthController;
+use App\Http\Controllers\Api\v1\Admin\MessageController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:api', 'prefix' => 'auth/v1'], function ($router) {
@@ -31,6 +32,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'auth/v1'], function ($rou
    Route::put('continents/{id}/deactivate', [ContinentController::class, 'deactivateContinent']);
    Route::put('continents/{id}/activate', [ContinentController::class, 'activateContinent']);
    Route::apiResource('/countries', CountryController::class);
+   Route::get('countries/{id}/list', [CountryController::class, 'getCountriesByContinent']);
    Route::put('countries/{id}/deactivate', [CountryController::class, 'deactivateCountry']);
    Route::put('countries/{id}/activate', [CountryController::class, 'activateCountry']);
    Route::apiResource('/destinations', DestinationController::class);
@@ -39,6 +41,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'auth/v1'], function ($rou
    Route::apiResource('/blogs', BlogController::class);
    Route::put('blogs/{id}/deactivate', [BlogController::class, 'deactivateBlog']);
    Route::put('blogs/{id}/activate', [BlogController::class, 'activateBlog']);
+   Route::apiResource('/messages', MessageController::class);
 });
 
 Route::post('/login', [AuthController::class, 'loginAuthentication']);

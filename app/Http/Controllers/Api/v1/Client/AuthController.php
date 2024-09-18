@@ -19,25 +19,25 @@ class AuthController extends BaseAPI
       $credentials = request(['email', 'password']);
       $userData = User::where('email', request('email'))->first();
    
-      return $this->authSV->loginAdmin($credentials, $userData);
+      return $this->authSV->loginClient($credentials, $userData);
    }
 
    // Get current user information
    public function userInformation() 
    {
-      return $this->authSV->GetProfileAdmin();
+      return $this->authSV->GetProfileClient();
       
    }
 
    // Logged out
    public function logout()
    {
-      return $this->authSV->logoutAdmin();
+      return $this->authSV->logoutClient();
    }
 
    // Generate new token when access token expired
    public function tokenRefresh()
    {
-      return $this->authSV->refreshAdmin();
+      return $this->authSV->refreshClient();
    }
 }

@@ -11,6 +11,10 @@ class Message extends Model
     use HasFactory, Uuid;
 
     protected $fillable = [
-
+        "name",	
+        "phone",
+        "email",
+        "message",	
+        "active"
     ];
 }

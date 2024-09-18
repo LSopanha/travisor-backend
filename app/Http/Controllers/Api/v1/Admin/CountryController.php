@@ -57,6 +57,18 @@ class CountryController extends BaseAPI
         }
     }
 
+    public function getCountriesByContinent($continent_global_id) {
+        try{
+            $countries = $this->countrySV->getCountriesByContinent($continent_global_id);
+            return $this->successResponse(CountryResource::collection($countries), 'Get destination successfully.');
+
+        }catch(\Exception $e){
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+
+    }
+
+
     public function update(UpdateCountryRequest $request, $global_id)
     {
         try{

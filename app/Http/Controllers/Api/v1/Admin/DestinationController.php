@@ -21,7 +21,7 @@ class DestinationController extends BaseAPI
     {
         try {
             $destinations = $this->destinationSV->getAllDestinations();
-            return $this->successResponse(DestinationResource::collection($destinations), 'Get all destiantions successfully.');
+            return $this->successResponse(DestinationResource::collection($destinations), 'Get all destinations successfully.');
         } catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }

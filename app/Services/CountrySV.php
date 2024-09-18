@@ -56,6 +56,18 @@ class CountrySV extends BaseService
       }
    }
 
+   // Get countries by course
+   public function getCountriesByContinent($continent_id) 
+   {
+      $continent_id = $this->getIdByGlobalId(Continent::class, $continent_id);
+      $countries = Country::where('countries.continent_id', $continent_id)->get();
+      if ($countries) {
+         return $countries;
+      } else {
+         throw new ModelNotFoundException('Country not found');
+      }
+   }
+
    // Update specific country
    public function updateCountry($params, $global_id)
    {

@@ -17,6 +17,8 @@ class BlogResource extends JsonResource
       return [
          'global_id'        => $this->global_id,
          'id'               => $this->id,
+         'title'               => $this->title,
+         'text'               => $this->text,
          'user'             => new UserResource($this->user),
          'destination'      => new DestinationResource($this->destination),
          'comments'         => $this->comments->count(),
