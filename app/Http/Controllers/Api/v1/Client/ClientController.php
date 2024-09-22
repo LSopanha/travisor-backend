@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api\v1\Client;
 
 use App\Http\Controllers\Api\v1\BaseAPI;
-use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserSV;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class UserController extends BaseAPI
+class ClientController extends BaseAPI
 {
     protected $userSV;
     public function __construct()
@@ -22,15 +23,15 @@ class UserController extends BaseAPI
     public function index()
     {
         try {
-            $role = 1;
-            $admins = $this->userSV->getAllUsers($role);
-            return $this->successResponse($admins, 'Get all admins successfully.');
+            $role = 2;
+            $users = $this->userSV->getAllUsers($role);
+            return $this->successResponse($users, 'Get all users successfully.');
         } catch(\Exception $e){
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
 
-    public function store(StoreAdminRequest $request)
+    public function store(StoreUserRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -43,8 +44,8 @@ class UserController extends BaseAPI
             $params['email']           = getParam($request->all(), 'email');
             $params['password']        = getParam($request->all(), 'password');
             $params['profile_picture'] = getParam($request->all(), 'profile_picture');
-            $role = 1;
-            $admin = $this->userSV->createNewAdmin($params, $role);
+            $role = 2;
+            $admin = $this->userSV->createNewUser($params, $role);
             DB::commit();
             return $this->successResponse($admin, 'Admin created successfully.');
         } catch(\Exception $e){
@@ -63,7 +64,30 @@ class UserController extends BaseAPI
         }
     }
 
-    public function update(UpdateAdminRequest $request, $global_id)
+    public function selfRegister(StoreUserRequest $request)
+    {
+        try{
+            DB::beginTransaction();
+            $params['first_name'] = getParam($request->all(), 'first_name');
+            $params['last_name']  = getParam($request->all(), 'last_name');
+            $params['username']   = getParam($request->all(), 'username');
+            $params['phone']      = getParam($request->all(), 'phone');
+            $params['email']      = getParam($request->all(), 'email');
+            $params['password']   = getParam($request->all(), 'password');
+            $user                 = User::where('phone', $params['phone'])->first();
+            if ($user) {
+                throw new \Exception('User already exists');
+            } 
+            $register = $this->userSV->selfRegister($params);
+            DB::commit();
+            return $this->successResponse($register, 'User register successfully.');
+        }catch(\Exception $e){
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+    }
+
+
+    public function update(UpdateUserRequest $request, $global_id)
     {
         try{
             DB::beginTransaction();
@@ -82,7 +106,7 @@ class UserController extends BaseAPI
         }
     }
 
-    public function deactivateAdmin($global_id)
+    public function deactivateUser($global_id)
     {
         try{
             $active = 0;
@@ -92,7 +116,7 @@ class UserController extends BaseAPI
         }
         return $this->successResponse($admin, 'Admin deactivated successfully.');
     }
-    public function activateAdmin($global_id)
+    public function activateUser($global_id)
     {
         try{
             $active = 1;

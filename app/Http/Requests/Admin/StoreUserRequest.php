@@ -24,13 +24,13 @@ class StoreUserRequest extends FormRequest
       return [
          'first_name'      => "required|string|max:255",
          'last_name'       => "required|string|max:255",
-         'username'        => "required|string|max:255",
-         "gender"          => "required|in:Male,Female",
-         'dob'             => 'required|date',
+         'username'        => "nullable|string|max:255",
+         "gender"          => "nullable|in:Male,Female",
+         'dob'             => 'nullable|date',
          "phone"           => "required|numeric|unique:users,phone",
          "email"           => "required|email|unique:users,email",
          'password'        => "required|string|min:8",
-         'profile_picture' => 'required',
+         'profile_picture' => 'nullable',
       ];
    }
 }

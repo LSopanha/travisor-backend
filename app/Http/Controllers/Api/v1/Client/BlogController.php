@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1\Admin;
+namespace App\Http\Controllers\Api\v1\Client;
 
 use App\Http\Controllers\Api\v1\BaseAPI;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Http\Resources\BlogResource;
-use App\Models\Blog;
 use App\Services\BlogSV;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +31,7 @@ class BlogController extends BaseAPI
     {
         try {
             DB::beginTransaction();
-            $params['image']        = $request->image;
+            $params['image']          = $request->image;
             $params['destination_id'] = $request->destination_id;
             $params['title']          = $request->title;
             $params['text']           = $request->text;
@@ -61,7 +60,7 @@ class BlogController extends BaseAPI
     {
         try{
             DB::beginTransaction();
-            $params['image']        = $request->image;
+            $params['image']          = $request->image;
             $params['destination_id'] = $request->destination_id;
             $params['title']          = $request->title;
             $params['text']           = $request->text;
@@ -84,15 +83,28 @@ class BlogController extends BaseAPI
         }
         return $this->successResponse($blog, 'Blog deactivated successfully.');
     }
-    public function activateBlog($global_id)
-    {
-        try{
-            $active = 1;
-            $blog = $this->blogSV->deactivateBlog($global_id, $active);
-        }catch(\Exception $e){
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
-        return $this->successResponse($blog, 'Blog activated successfully.');
-    }
 
+    // public function activateBlog($global_id)
+    // {
+    //     try{
+    //         $active = 1;
+    //         $blog = $this->blogSV->deactivateBlog($global_id, $active);
+    //     }catch(\Exception $e){
+    //         return $this->errorResponse($e->getMessage(), $e->getCode());
+    //     }
+    //     return $this->successResponse($blog, 'Blog activated successfully.');
+    // }
+
+    // public function destroy($global_id)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+    //         $this->blogSV->deleteBlog($global_id); // Call the method to delete the blog
+    //         DB::commit();
+    //         return $this->successResponse(null, 'Blog deleted successfully.');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack(); // Rollback on failure
+    //         return $this->errorResponse($e->getMessage(), $e->getCode());
+    //     }
+    // }
 }

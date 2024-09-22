@@ -60,6 +60,18 @@ class DestinationSV extends BaseService
       }
    }
 
+      // Show specific destination
+      public function getDestinationByCountry($global_id)
+      {
+         $country_id   = $this->getIdByGlobalId(Country::class, $global_id);
+         $destinations = Destination::where('destinations.country_id', $country_id)->get();
+         if ($destinations) {
+            return $destinations;
+         } else {
+            throw new ModelNotFoundException('Destination not found');
+         }
+      }
+
    // Update specific destination
    public function updateDestination($params, $global_id)
    {

@@ -29,11 +29,11 @@ class UserSV extends BaseService
    }
 
    // Create new admin
-   public function createNewAdmin($params, $role) 
+   public function createNewUser($params, $role) 
    {
       $admin = null;
       if (isset($params)) {
-         $admin = User::create([
+         $user = User::create([
             'first_name'      => $params['first_name'],
             'last_name'       => $params['last_name'],
             'username'        => $params['username'],
@@ -45,8 +45,24 @@ class UserSV extends BaseService
             'profile_picture' => $params['profile_picture'],
             'role_id'         => $role,
          ]);
-         return $admin;
+         return $user;
       }
+   }
+
+   public function selfRegister($params) {
+      $user = null;
+      if (isset($params)) {
+         $user = User::create([
+            'first_name' => $params['first_name'],
+            'last_name'  => $params['last_name'],
+            'username'   => $params['username'],
+            'phone'      => $params['phone'],
+            'email'      => $params['email'],
+            'password'   => $params['password'],
+            'role_id'    => 2,
+         ]);
+      }
+      return $user;
    }
 
    // Show specific admin

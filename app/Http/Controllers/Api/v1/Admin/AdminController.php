@@ -44,7 +44,7 @@ class AdminController extends BaseAPI
             $params['password']        = getParam($request->all(), 'password');
             $params['profile_picture'] = getParam($request->all(), 'profile_picture');
             $role = 1;
-            $admin = $this->userSV->createNewAdmin($params, $role);
+            $admin = $this->userSV->createNewUser($params, $role);
             DB::commit();
             return $this->successResponse($admin, 'Admin created successfully.');
         } catch(\Exception $e){

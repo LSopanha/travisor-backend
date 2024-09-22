@@ -36,7 +36,7 @@ class BlogSV extends BaseService
    public function createNewBlog($params) 
    {
       $blog  = null;
-      $user_id = $this->getIdByGlobalId(User::class, $params['user_id']);
+      $user_id   = Auth::id();
       $destination_id   = $this->getIdByGlobalId(Destination::class, $params['destination_id']);
 
       if (isset($params)) {
@@ -65,7 +65,7 @@ class BlogSV extends BaseService
    public function updateBlog($params, $global_id)
    {
       $blog  = Blog::where('blogs.global_id', $global_id)->first();
-      $user_id = $this->getIdByGlobalId(User::class, $params['user_id']);
+      $user_id   = Auth::id();
       $destination_id   = $this->getIdByGlobalId(Destination::class, $params['destination_id']);
 
       if (isset($blog)) {
@@ -96,4 +96,11 @@ class BlogSV extends BaseService
          throw new ModelNotFoundException('Blog not found');
       }
    }
+
+   public function deleteBlog($global_id)
+   {
+       $blog = Blog::findOrFail($global_id);
+       $blog->delete();
+   }
+
 }
